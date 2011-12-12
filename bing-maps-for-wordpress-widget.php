@@ -8,9 +8,32 @@ Version: 1.0
 Author URI: 
 */
 
-if( ! is_admin() ) { // Activate the plugin
+require_once( 'bing-maps-content.class.php' );
 
-	require_once( 'widget.class.php' );
+/**
+ * Extends the bingMapsForWordpressContent class to include a widget 
+ * for displaying maps. 
+ */
+class Bing_Maps_Widget_Helper extends bingMapsForWordpressContent {
+	
+	/**
+	 * Creates the widget class
+	 */
+	function __construct( $attributes ) {
 
-	new bing_maps_widget();
+		// Get options
+		$options = get_option( 'bing_maps_for_wordpress' );
+
+		$this->atts = $attributes;
+
+		// Only run if we have an API key
+		if( isset( $options['api'] ) AND $options['api'] != '' ) {
+			// Header action - to load up Bing maps JavaScript
+			add_action( 'wp_head', array( $this, '__header' ) );
+
+			// Set the API key
+			$this->apiKey = $options['api'];
+		}
+	}
 }
+
