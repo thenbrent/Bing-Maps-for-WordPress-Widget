@@ -168,6 +168,9 @@ class Bing_Maps_Widget_Control_Panel extends bingMapsForWordpressControlPanel {
 	 */
 	function __construct( $file ) {
 		parent::__construct( $file );
+
+		// Remove admin CSS style sheet
+		remove_action('admin_head', array($this, 'registerHead'));
 	}
 
 	/**
