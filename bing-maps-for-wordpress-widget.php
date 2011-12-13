@@ -8,32 +8,24 @@ Version: 1.0
 Author URI: 
 */
 
-require_once( 'bing-maps-content.class.php' );
-
 /**
- * Extends the bingMapsForWordpressContent class to include a widget 
- * for displaying maps. 
+ * Load files containing backup classes if the required classes are not already registered.
+ * 
+ * Because of the way that WordPress loads plugins, it’s possible that this plugin could load
+ * before or after the Bing Maps for WordPress plugin. This makes it unreliable to check for the 
+ * existence of classes when the file is parsed. Checking after all plugins are loaded is more reliable. 
  */
-class Bing_Maps_Widget_Helper extends bingMapsForWordpressContent {
-	
-	/**
-	 * Creates the widget class
-	 */
-	function __construct( $attributes ) {
+function bmw_loader() {
 
-		// Get options
-		$options = get_option( 'bing_maps_for_wordpress' );
+	if( ! class_exists( 'bingMapsForWordpressContent' ) )
+		require_once( 'bing-maps-content.class.php' );
 
-		$this->atts = $attributes;
-
-		// Only run if we have an API key
-		if( isset( $options['api'] ) AND $options['api'] != '' ) {
-			// Header action - to load up Bing maps JavaScript
-			add_action( 'wp_head', array( $this, '__header' ) );
-
-			// Set the API key
-			$this->apiKey = $options['api'];
-		}
+	/* Load the Control Panel class if it's an admin page and not the activation page for the bing-maps-for-wordpress plugin (to avoid redeclaring class) */
+	if( ! class_exists( 'bingMapsForWordpressControlPanel' ) && is_admin() && ! ( isset( $_GET['action'] ) && $_GET['action'] == 'activate' && isset( $_GET['plugin'] ) && strpos( $_GET['plugin'], 'bing-maps-for-wordpress' ) !== false ) ) {
+		require_once( 'bing-maps-control-panel.class.php' );
+		new Bing_Maps_Widget_Control_Panel( plugin_basename( __FILE__ ) );
 	}
-}
 
+	require_once( 'widget.class.php' );
+}
+add_action( 'plugins_loaded', 'bmw_loader' );
