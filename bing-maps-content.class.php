@@ -1,5 +1,4 @@
 <?php
-if( ! class_exists( 'bingMapsForWordpressContent' ) ) :
 class bingMapsForWordpressContent
 {
 	/*
@@ -491,4 +490,3 @@ class bingMapsForWordpressContent
 		echo '<script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.3"></script>';
 	}
 }
-endif; // end if class_exists
