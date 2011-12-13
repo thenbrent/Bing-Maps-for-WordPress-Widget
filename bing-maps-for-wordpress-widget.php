@@ -26,6 +26,6 @@ function bmw_loader() {
 		new Bing_Maps_Widget_Control_Panel( plugin_basename( __FILE__ ) );
 	}
 
-	require_once( 'widget.class.php' );
+	require_once( 'bing-maps-widget.class.php' );
 }
 add_action( 'plugins_loaded', 'bmw_loader' );
