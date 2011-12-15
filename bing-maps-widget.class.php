@@ -100,9 +100,10 @@ class Bing_Maps_Widget extends WP_Widget {
 	}
 
 	/**
-	 * Load the Bing map controls JavaScript
+	 * Load the Bing map controls JavaScripts. If the atlascompat script is not loaded, maps do not work in Firefox. 
 	 */
 	function add_script() {
+		echo '<script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/v6.3/js/atlascompat.js"></script>';
 		echo '<script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.3"></script>';
 	}
 
